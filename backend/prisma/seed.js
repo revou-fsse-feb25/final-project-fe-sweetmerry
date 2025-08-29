@@ -14,10 +14,12 @@ async function main() {
       password: adminPassword,
       name: 'Admin SweetMerry',
       role: 'ADMIN',
+      phone: '081234567890',
+      address: 'Jl. Admin No. 1, Jakarta'
     },
   });
 
-  // Create sample user
+  // Create regular user
   const userPassword = await bcrypt.hash('user123', 10);
   const user = await prisma.user.upsert({
     where: { email: 'user@sweetmerry.com' },
@@ -25,66 +27,117 @@ async function main() {
     create: {
       email: 'user@sweetmerry.com',
       password: userPassword,
-      name: 'User Sample',
+      name: 'John Doe',
       role: 'USER',
+      phone: '081234567891',
+      address: 'Jl. User No. 1, Jakarta'
     },
   });
 
-  // Create sample products
-  const products = await Promise.all([
-    prisma.product.upsert({
-      where: { id: 1 },
+  // Create services
+  const services = await Promise.all([
+    prisma.service.upsert({
+      where: { id: 'service-1' },
       update: {},
       create: {
-        name: 'Kue Cokelat Premium',
-        description: 'Kue cokelat dengan topping premium',
+        id: 'service-1',
+        name: 'Facial Treatment',
+        description: 'Deep cleansing facial treatment with premium products',
         price: 150000,
-        category: 'Kue',
+        duration: 60,
+        category: 'Beauty',
+        image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400'
       },
     }),
-    prisma.product.upsert({
-      where: { id: 2 },
+    prisma.service.upsert({
+      where: { id: 'service-2' },
       update: {},
       create: {
-        name: 'Kue Keju Lembut',
-        description: 'Kue keju dengan tekstur lembut',
-        price: 130000,
-        category: 'Kue',
+        id: 'service-2',
+        name: 'Massage Therapy',
+        description: 'Relaxing full body massage therapy',
+        price: 200000,
+        duration: 90,
+        category: 'Wellness',
+        image: 'https://images.unsplash.com/photo-1544161512-4ab6ade6db2f?w=400'
       },
     }),
-    prisma.product.upsert({
-      where: { id: 3 },
+    prisma.service.upsert({
+      where: { id: 'service-3' },
       update: {},
       create: {
-        name: 'Paket Snack Box A',
-        description: 'Paket snack untuk 50 porsi',
-        price: 25000,
-        category: 'Snack',
+        id: 'service-3',
+        name: 'Hair Styling',
+        description: 'Professional hair styling and treatment',
+        price: 100000,
+        duration: 45,
+        category: 'Beauty',
+        image: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400'
       },
     }),
-    prisma.product.upsert({
-      where: { id: 4 },
+    prisma.service.upsert({
+      where: { id: 'service-4' },
       update: {},
       create: {
-        name: 'Paket Nasi Kotak B',
-        description: 'Paket nasi kotak untuk 50 porsi',
-        price: 35000,
-        category: 'Catering',
+        id: 'service-4',
+        name: 'Nail Art',
+        description: 'Creative nail art and manicure service',
+        price: 80000,
+        duration: 30,
+        category: 'Beauty',
+        image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400'
       },
     }),
-    prisma.product.upsert({
-      where: { id: 5 },
+    prisma.service.upsert({
+      where: { id: 'service-5' },
       update: {},
       create: {
-        name: 'Tumpeng Mini',
-        description: 'Tumpeng mini untuk acara kecil',
-        price: 75000,
-        category: 'Catering',
+        id: 'service-5',
+        name: 'Spa Treatment',
+        description: 'Complete spa treatment with aromatherapy',
+        price: 300000,
+        duration: 120,
+        category: 'Wellness',
+        image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400'
       },
-    }),
+    })
   ]);
 
-  console.log({ admin, user, products });
+  // Create sample bookings
+  const bookings = await Promise.all([
+    prisma.booking.upsert({
+      where: { id: 'booking-1' },
+      update: {},
+      create: {
+        id: 'booking-1',
+        userId: user.id,
+        serviceId: 'service-1',
+        date: new Date('2024-01-15'),
+        time: '10:00',
+        status: 'CONFIRMED',
+        notes: 'Please use sensitive skin products'
+      },
+    }),
+    prisma.booking.upsert({
+      where: { id: 'booking-2' },
+      update: {},
+      create: {
+        id: 'booking-2',
+        userId: user.id,
+        serviceId: 'service-2',
+        date: new Date('2024-01-20'),
+        time: '14:00',
+        status: 'PENDING',
+        notes: 'Focus on back and shoulders'
+      },
+    })
+  ]);
+
+  console.log('Seed data created successfully!');
+  console.log('Admin user:', admin.email);
+  console.log('Regular user:', user.email);
+  console.log('Services created:', services.length);
+  console.log('Bookings created:', bookings.length);
 }
 
 main()

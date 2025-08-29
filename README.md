@@ -1,212 +1,313 @@
-# SweetMerry - Sistem Pemesanan Kue & Catering
+# SweetMerry - Booking Management System
 
-## Deskripsi Proyek
-SweetMerry adalah sistem manajemen pemesanan untuk layanan kue dan catering. Pengguna dapat memesan berbagai jenis kue, makanan, dan layanan catering dengan mudah. Sistem ini memenuhi semua persyaratan CRACK Final Project dengan implementasi full-stack yang lengkap.
+A complete booking management system built with React, Node.js, and PostgreSQL. This application allows users to browse services, make bookings, and manage their reservations, while administrators can manage services, users, and bookings.
 
-## Fitur Utama
-- **Autentikasi & Otorisasi**: Daftar, login, dan role-based access (User/Admin)
-- **Manajemen Produk**: Admin dapat menambah/edit/hapus produk
-- **Pemesanan**: Pengguna dapat memesan produk dengan pilihan tanggal/waktu
-- **Dashboard**: Tampilan riwayat pemesanan dan status
-- **Pencarian**: Filter produk berdasarkan kategori dan nama
-- **Status Pemesanan**: PENDING, CONFIRMED, CANCELLED, COMPLETED
+## 🚀 Live Demo
 
-## Tech Stack
+- **Frontend**: [https://sweetmerry-frontend.onrender.com](https://sweetmerry-frontend.onrender.com)
+- **Backend API**: [https://sweetmerry-backend.onrender.com](https://sweetmerry-backend.onrender.com)
+
+## ✨ Features
+
+### For Users
+- 🔐 User authentication (register/login)
+- 🔍 Browse and search services
+- 📅 Make bookings with date/time selection
+- 📋 View booking history and status
+- ✏️ Edit or cancel bookings
+- 👤 Profile management
+- 📱 Responsive design
+
+### For Administrators
+- 📊 Dashboard with statistics
+- 🛠️ Service management (CRUD operations)
+- 👥 User management
+- 📋 Booking management and status updates
+- 📈 Analytics and reporting
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- **React.js** - UI Framework
+- **React 18** - UI framework
+- **Vite** - Build tool
 - **Tailwind CSS** - Styling
 - **React Router** - Navigation
-- **Axios** - HTTP Client
+- **Axios** - HTTP client
+- **Lucide React** - Icons
 
 ### Backend
-- **Node.js** - Runtime Environment
-- **Express.js** - Web Framework
+- **Node.js** - Runtime
+- **Express.js** - Web framework
+- **Prisma** - Database ORM
 - **PostgreSQL** - Database
-- **Prisma** - ORM
 - **JWT** - Authentication
-- **bcryptjs** - Password Hashing
-- **express-validator** - Input Validation
+- **bcryptjs** - Password hashing
+- **Express Validator** - Input validation
 
-## Instalasi & Penggunaan
+## 📦 Installation
 
 ### Prerequisites
-- Node.js (v16+)
-- PostgreSQL
+- Node.js 18+
+- PostgreSQL database
 - Git
 
-### Frontend Setup
-```bash
-cd frontend
-npm install
-npm start
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd final-project-fe-sweetmerry
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   
+   # Copy environment file
+   cp env.example .env
+   
+   # Update .env with your database credentials
+   # DATABASE_URL="postgresql://username:password@localhost:5432/sweetmerry_db"
+   # JWT_SECRET="your-secret-key"
+   
+   # Setup database
+   npx prisma generate
+   npx prisma db push
+   npm run seed
+   
+   # Start development server
+   npm run dev
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd ../frontend
+   npm install
+   
+   # Create environment file
+   echo "VITE_API_URL=http://localhost:5000/api" > .env
+   
+   # Start development server
+   npm run dev
+   ```
+
+4. **Access the application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:5000
+
+## 🔧 Configuration
+
+### Environment Variables
+
+#### Backend (.env)
+```env
+NODE_ENV=development
+PORT=5000
+DATABASE_URL="postgresql://username:password@localhost:5432/sweetmerry_db"
+JWT_SECRET="your-super-secret-jwt-key"
+CORS_ORIGIN="http://localhost:3000"
 ```
-Frontend akan berjalan di: http://localhost:3000
 
-### Backend Setup
-```bash
-cd backend
-npm install
-
-# Setup environment variables
-cp env.example .env
-# Edit .env dengan konfigurasi database Anda
-
-# Setup database
-npm run db:generate
-npm run db:push
-npm run db:seed
-
-# Start server
-npm run dev
+#### Frontend (.env)
+```env
+VITE_API_URL=http://localhost:5000/api
 ```
-Backend akan berjalan di: http://localhost:5000
 
-## API Documentation
+## 📚 API Documentation
 
-### Authentication Endpoints
-- `POST /api/auth/register` - Register user baru
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user (protected)
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user profile
 
-### Products Endpoints
-- `GET /api/products` - Get semua produk
-- `GET /api/products/:id` - Get produk by ID
-- `POST /api/products` - Create produk (admin only)
-- `PUT /api/products/:id` - Update produk (admin only)
-- `DELETE /api/products/:id` - Delete produk (admin only)
+### Services
+- `GET /api/services` - Get all services (with filters)
+- `GET /api/services/:id` - Get service by ID
+- `POST /api/services` - Create service (admin only)
+- `PUT /api/services/:id` - Update service (admin only)
+- `DELETE /api/services/:id` - Delete service (admin only)
+- `GET /api/services/categories/list` - Get service categories
 
-### Orders Endpoints
-- `GET /api/orders/my-orders` - Get user orders (protected)
-- `GET /api/orders` - Get semua orders (admin only)
-- `POST /api/orders` - Create order baru (protected)
-- `PUT /api/orders/:id/status` - Update order status (admin only)
-- `PUT /api/orders/:id/cancel` - Cancel order (protected)
+### Bookings
+- `GET /api/bookings` - Get user/admin bookings
+- `GET /api/bookings/:id` - Get booking by ID
+- `POST /api/bookings` - Create new booking
+- `PUT /api/bookings/:id` - Update booking
+- `DELETE /api/bookings/:id` - Delete booking (admin only)
+- `GET /api/bookings/stats/overview` - Get booking statistics (admin only)
 
-## Database Schema
+### Users
+- `GET /api/users` - Get all users (admin only)
+- `GET /api/users/:id` - Get user by ID (admin only)
+- `PUT /api/users/:id` - Update user
+- `DELETE /api/users/:id` - Delete user (admin only)
+- `GET /api/users/stats/overview` - Get user statistics (admin only)
 
-### User
-- `id` (Primary Key)
-- `email` (Unique)
-- `password` (Hashed)
-- `name`
-- `role` (USER/ADMIN)
-- `createdAt`, `updatedAt`
+## 🗄️ Database Schema
 
-### Product
-- `id` (Primary Key)
-- `name`
-- `description`
-- `price`
-- `category`
-- `isAvailable`
-- `createdAt`, `updatedAt`
+### Users
+- `id` - Unique identifier
+- `email` - Email address (unique)
+- `password` - Hashed password
+- `name` - Full name
+- `role` - User role (USER/ADMIN)
+- `phone` - Phone number (optional)
+- `address` - Address (optional)
+- `createdAt` - Account creation date
+- `updatedAt` - Last update date
 
-### Order
-- `id` (Primary Key)
-- `userId` (Foreign Key)
-- `productId` (Foreign Key)
-- `date`
-- `time`
-- `status` (PENDING/CONFIRMED/CANCELLED/COMPLETED)
-- `createdAt`, `updatedAt`
+### Services
+- `id` - Unique identifier
+- `name` - Service name
+- `description` - Service description
+- `price` - Service price
+- `duration` - Duration in minutes
+- `category` - Service category
+- `image` - Service image URL (optional)
+- `isActive` - Service availability status
+- `createdAt` - Service creation date
+- `updatedAt` - Last update date
 
-## Sample Data
+### Bookings
+- `id` - Unique identifier
+- `userId` - User ID (foreign key)
+- `serviceId` - Service ID (foreign key)
+- `date` - Booking date
+- `time` - Booking time
+- `status` - Booking status (PENDING/CONFIRMED/COMPLETED/CANCELLED)
+- `notes` - Additional notes (optional)
+- `createdAt` - Booking creation date
+- `updatedAt` - Last update date
 
-Setelah menjalankan seed, Anda akan memiliki:
+## 🚀 Deployment
 
-**Admin User:**
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+### Quick Deployment (Render)
+
+1. **Backend Deployment**
+   - Connect GitHub repository to Render
+   - Create PostgreSQL database
+   - Set environment variables
+   - Deploy
+
+2. **Frontend Deployment**
+   - Create static site on Render
+   - Set build command: `npm install && npm run build`
+   - Set publish directory: `dist`
+   - Configure environment variables
+
+## 🧪 Testing
+
+### Demo Credentials
+
+#### Admin User
 - Email: `admin@sweetmerry.com`
 - Password: `admin123`
 
-**Regular User:**
+#### Regular User
 - Email: `user@sweetmerry.com`
 - Password: `user123`
 
-**Sample Products:**
-- Kue Cokelat Premium (Rp 150.000)
-- Kue Keju Lembut (Rp 130.000)
-- Paket Snack Box A (Rp 25.000)
-- Paket Nasi Kotak B (Rp 35.000)
-- Tumpeng Mini (Rp 75.000)
+### Manual Testing
 
-## Fitur CRACK yang Diimplementasi
+1. **User Registration/Login**
+   - Register a new account
+   - Login with credentials
+   - Verify profile access
 
-### ✅ Autentikasi & Otorisasi
+2. **Service Booking**
+   - Browse available services
+   - Select a service
+   - Make a booking
+   - Verify booking confirmation
+
+3. **Admin Features**
+   - Login as admin
+   - Access admin dashboard
+   - Manage services
+   - Manage bookings
+   - Manage users
+
+## 📱 Screenshots
+
+### User Interface
+- Home page with service showcase
+- Service listing with filters
+- Booking form with date/time selection
+- User dashboard with booking history
+- Profile management
+
+### Admin Interface
+- Admin dashboard with statistics
+- Service management interface
+- Booking management with status updates
+- User management panel
+
+## 🔒 Security Features
+
 - JWT-based authentication
-- Role-based authorization (User/Admin)
-- Protected routes
+- Password hashing with bcrypt
+- Input validation and sanitization
+- CORS protection
+- Role-based access control
+- Protected API endpoints
 
-### ✅ Manajemen Konten/Layanan
-- Admin CRUD untuk produk
-- Validasi input
-- Status produk (available/unavailable)
+## 🎨 UI/UX Features
 
-### ✅ Alur Interaksi Pengguna
-- User dapat memesan produk
-- Pilihan tanggal dan waktu
-- Konfirmasi pemesanan
+- Responsive design for all devices
+- Modern and clean interface
+- Loading states and error handling
+- Form validation
+- Toast notifications
+- Intuitive navigation
 
-### ✅ Pelacakan & Status
-- Status pemesanan real-time
-- Riwayat pemesanan user
-- Dashboard admin untuk monitoring
+## 📈 Performance
 
-### ✅ Aksi Perbarui atau Batalkan
-- User dapat cancel pesanan sendiri
-- Admin dapat update status pesanan
-- Validasi akses berdasarkan role
+- Optimized database queries
+- Efficient state management
+- Lazy loading of components
+- Optimized bundle size
+- CDN-ready static assets
 
-### ✅ Jelajah & Cari
-- Filter produk berdasarkan nama
-- Kategori produk
-- Tampilan produk yang tersedia
+## 🤝 Contributing
 
-### ✅ Dashboard
-- User dashboard: riwayat pesanan
-- Admin dashboard: kelola produk & pesanan
-- Statistik dan monitoring
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-## Deployment
+## 📄 License
 
-### Frontend (Vercel/Netlify)
-```bash
-cd frontend
-npm run build
-# Deploy folder build/
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Backend (Render/Railway)
-```bash
-cd backend
-# Set environment variables
-npm start
-```
+## 🆘 Support
 
-## Repository Structure
-```
-final-project-fe-sweetmerry/
-├── frontend/                 # React frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── pages/          # Page components
-│   │   └── sampleData/     # Mock data
-│   └── package.json
-├── backend/                 # Express backend
-│   ├── middleware/         # Auth middleware
-│   ├── routes/            # API routes
-│   ├── prisma/           # Database schema & seed
-│   └── server.js         # Main server file
-└── README.md
-```
+For support and questions:
+1. Check the [documentation](./docs/)
+2. Review the [deployment guide](./DEPLOYMENT.md)
+3. Open an issue on GitHub
+4. Contact the development team
 
-## Contributing
-1. Fork repository
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Create Pull Request
+## 🔄 Changelog
 
-## License
-MIT License
+### Version 1.0.0
+- Initial release
+- Complete booking management system
+- User and admin interfaces
+- Full API implementation
+- Production deployment ready
+
+## 🙏 Acknowledgments
+
+- React team for the amazing framework
+- Vite team for the fast build tool
+- Tailwind CSS for the utility-first CSS framework
+- Prisma team for the excellent ORM
+- All contributors and testers
+
+---
+
+**Built with ❤️ by the SweetMerry Team**
