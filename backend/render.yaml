@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: sweetmerry-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://sweetmerry-frontend.onrender.com
+    healthCheckPath: /api/health
+
+databases:
+  - name: sweetmerry-db
+    plan: free
+    databaseName: sweetmerry_db
+    user: sweetmerry_user
